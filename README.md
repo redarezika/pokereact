@@ -49,4 +49,4 @@ $ expo start
 ```
 
 # Sample Simple Application
-![plot](./assets/screenshot/example.jpg)
+![plot](./assets/screenshot/screenshot.jpg)
