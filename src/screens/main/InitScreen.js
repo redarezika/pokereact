@@ -43,7 +43,6 @@ class InitScreen extends React.Component {
       for(let item of results) {
         var detailsData = await Net.getPokemonDetail(item.name);
         var { name, stats } = detailsData;
-        console.log({ name, stats })
         item['details'] = { name, stats }
       }
       this.props.loadLimitData(results)

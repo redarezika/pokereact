@@ -42,7 +42,7 @@ $ npm run android
 
 ##### Android (6.0+) (Using Expo)
 
-Run command to open Android emulator and run app:
+Run command to start using expo
 
 ```
 $ expo start
