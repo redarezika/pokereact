@@ -1,11 +1,15 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import MainScreen from './src/screens/main/MainScreen';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import PokeReducer from './src/redux/Reducer';
+import InitScreen from './src/screens/main/InitScreen';
+
+const store = createStore(PokeReducer);
 
 export default function App() {
   return (
-    <SafeAreaView>
-      <MainScreen />
-    </SafeAreaView>
+    <Provider store={store}>
+      <InitScreen />
+    </Provider>
   );
 }

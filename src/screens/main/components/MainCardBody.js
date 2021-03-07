@@ -1,25 +1,60 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SvgUri from "expo-svg-uri";
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import MainStatusBar from './MainStatusBar';
 
-const MainCardBody = ({ name, image }) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <SvgUri
-          width="60%"
-          source={{
-            uri: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg"
-          }}
-        />
+class MainCardBody extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.name     = props.name;
+    this.number   = props.number;
+    this.nav      = props.nav;
+    this.stats    = props.stats;
+    this.isDone   = props.isDone;
+  }
+
+  /**
+   * Render screen
+   * @returns {View}
+   */
+  render() {
+    const data    = this.props.limitedPokemon.find(item => item.name == this.name);
+    const details = data.details || {}
+    const stats   = details.stats || [];
+    const hp      = stats[0] || {};
+    const atk     = stats[1] || {};
+    const def     = stats[2] || {};
+    const satk    = stats[3] || {};
+    const sdef    = stats[4] || {};
+    const speed   = stats[5] || {};
+    const stat    = stats.map(item => item.base_stat);
+    const max     = Math.max(...stat)
+    return (
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${this.number}.png`}} style={{width: 100, height: 100}} />
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoName}>{this.name}</Text>
+          <MainStatusBar 
+            hp={hp.base_stat || 0} 
+            atk={atk.base_stat || 0}
+            def={def.base_stat || 0}
+            satk={satk.base_stat || 0}
+            sdef={sdef.base_stat || 0}
+            speed={speed.base_stat || 0}
+            max={max || 100}
+          />
+        </View>
       </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoName}>{name}</Text>
-      </View>
-    </View>
-  )
+    )
+  }
 }
 
+/**
+ * Main card body stylesheet
+ */
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#7CBEB3",
@@ -28,8 +63,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     shadowColor: 'black',
     shadowOpacity: 0.25,
-    elevation: 15,
-    height: 170,
+    elevation: 5,
+    height: 180,
     marginHorizontal: 20,
     marginVertical: 10
   },
@@ -46,7 +81,7 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 50,
     shadowColor: 'black',
     shadowOpacity: 0.25,
-    elevation: 15,
+    elevation: 5,
     justifyContent: "center",
     paddingLeft: 20
   },
@@ -56,7 +91,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: "50%",
     right: 0,
-    justifyContent: "center",
     padding: 10,
     borderTopEndRadius: 15,
     borderBottomEndRadius: 15
@@ -65,8 +99,23 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
-    alignSelf: "center"
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  buttonShowDetail: {
+    position: "absolute",
+    bottom: 15,
+    right: 30,
+    left: 30
   }
 })
 
-export default MainCardBody;
+/**
+ * Create connection to global state
+ * @param {any} state
+ */
+const mapStateToProps = (state) => ({
+  limitedPokemon: state.limitedPokemon
+})
+
+export default connect(mapStateToProps)(MainCardBody);

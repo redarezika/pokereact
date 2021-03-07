@@ -5,14 +5,17 @@ export default function MainHeader() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>POKEDEX</Text>
+      <Text style={styles.title}>POKEDEX CARD</Text>
     </View>
   )
 }
 
+/**
+ * Main header stylesheet
+ */
 const styles = StyleSheet.create({
   container: {
-    height: 100,
+    height: 80,
     backgroundColor: "#7CBEB3",
     justifyContent: "center",
     position: "absolute",

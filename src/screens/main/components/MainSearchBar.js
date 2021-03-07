@@ -10,10 +10,13 @@ export default function MainSearchBar() {
   );
 }
 
+/**
+ * Main search bar stylesheet
+ */
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 80,
+    top: 110,
     left: 20,
     right: 20
   },

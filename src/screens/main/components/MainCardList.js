@@ -1,41 +1,68 @@
 import * as React from 'react';
 import { StyleSheet, VirtualizedList } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import MainCardBody from './MainCardBody';
-
-const DATA = [];
+import { loadLimitData } from '../../../redux/Actions';
 
 const getItem = (data, index) => ({
   id: Math.random().toString(12).substring(0),
-  title: `Item ${index+1}`
+  name: data[index].name,
+  number: index + 1,
+  stats: data[index].details.stats
 });
 
-const getItemCount = (data) => 20;
+class MainCardList extends React.Component {
 
-const Item = () => (
-  <MainCardBody 
-    name="hahahaha ha ha"
-  />
-);
+  constructor(props) {
+    super(props)
+    this.nav = this.props.nav;
+  }
 
-const MainCardList = () => {
-
-  return (
-    <VirtualizedList
-      data={DATA}
-      initialNumToRender={4}
-      renderItem={({ item }) => <Item title={item.title} />}
-      keyExtractor={item => item.id}
-      getItemCount={getItemCount}
-      getItem={getItem}
-      style={styles.container}
-    />
-  )
+  /**
+   * Render screen
+   * @returns {VirtualizedList}
+   */
+  render() {
+    return (
+      <VirtualizedList
+        data={this.props.limitedPokemon}
+        initialNumToRender={1}
+        renderItem={({ item }) => <MainCardBody name={item.name} number={item.number} nav={this.nav} />}
+        keyExtractor={item => item.id}
+        getItemCount={() => ( this.props.limitedPokemon.length) }
+        getItem={getItem}
+        style={styles.container}
+      />
+    )
+  }
 }
 
+/**
+ * Main card list stylesheet
+ */
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 130
+    marginTop: 100
   }
 })
 
-export default MainCardList;
+/**
+ * Create connection to global state
+ * @param {any} state 
+ */
+const mapStateToProps = (state) => ({
+  limitedPokemon: state.limitedPokemon
+})
+
+/**
+ * Create connection to global action
+ * @param {*} dispatch 
+ */
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    loadLimitData
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainCardList);
