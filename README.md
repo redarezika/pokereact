@@ -47,3 +47,6 @@ Run command to start using expo
 ```
 $ expo start
 ```
+
+# Sample Simple Application
+![plot](./assets/screenshot/example.jpg)
